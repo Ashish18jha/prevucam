@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Secrets
+backend/config/api_keys.py
+.env
+backend/.env
+frontend/.env
+
+# Runtime data (keep folder structure)
+storage/**
+!storage/*/
+!storage/*/.gitkeep
+
+# Model weights are large – downloaded automatically on first run if missing
+# (remove this line to commit them)
+models/*.pt
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Large sample video (regenerate with backend/scripts/make_security_test_video.py)
+# samples/*.mp4

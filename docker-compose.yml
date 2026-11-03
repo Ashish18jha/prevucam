@@ -1,0 +1,38 @@
+# docker compose up --build   ->  dashboard on http://localhost:8080, API on http://localhost:8000/docs
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file:
+      - path: backend/.env
+        required: false
+    environment:
+      STORAGE_PATH: /app/storage
+      MODEL_PATH: /app/models/yolov8n.pt
+      CORS_ORIGINS: http://localhost:8080
+    volumes:
+      - ./storage:/app/storage
+      - ./models:/app/models
+    ports:
+      - "8000:8000"
+    # Webcam on Linux:
+    # devices:
+    #   - /dev/video0:/dev/video0
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on: [backend]
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  # Optional PostgreSQL – set DATABASE_URL=postgresql+psycopg://prevucam:prevucam@db:5432/prevucam
+  # and add psycopg[binary] to backend/requirements.txt
+  # db:
+  #   image: postgres:16-alpine
+  #   environment: { POSTGRES_USER: prevucam, POSTGRES_PASSWORD: prevucam, POSTGRES_DB: prevucam }
+  #   volumes: [pgdata:/var/lib/postgresql/data]
+# volumes:
+#   pgdata:
